@@ -1,0 +1,10 @@
+node_modules
+.env
+logs
+envs
+dist
+resources/static/uploads/*
+smart_contracts/marketplace/node_modules
+smart_contracts/marketplace/.env
+smart_contracts/tokens/node_modules
+smart_contracts/tokens/.env

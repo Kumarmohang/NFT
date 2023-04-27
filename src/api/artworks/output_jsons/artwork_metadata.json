@@ -1,0 +1,10 @@
+{
+  "artworkId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+  "results": [
+    {
+      "changesMade": "string",
+      "changeType": "string",
+      "updatedAt": "string"
+    }
+  ]
+}

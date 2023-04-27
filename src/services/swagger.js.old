@@ -1,0 +1,15 @@
+import swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from './api_docs.json';
+const swagger = () => {
+
+  const swOptions = {
+    explorer: true,
+    customCss:
+      '.swagger-ui .opblock-body pre span {color: #DCD427 !important} .swagger-ui .opblock-body pre {color: #DCD427} .swagger-ui textarea.curl {color: #DCD427} .swagger-ui .response-col_description__inner div.markdown, .swagger-ui .response-col_description__inner div.renderedMarkdown {color: #DCD427}'
+  };
+
+  
+  return [swaggerUi.serve, swaggerUi.setup(swaggerDocument, swOptions)];
+};
+
+export default swagger;

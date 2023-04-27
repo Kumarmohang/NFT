@@ -1,0 +1,46 @@
+import { Router } from 'express';
+// import auth from './auth';
+// import users from './users';
+// import countries from './countries';
+// import categories from './categories';
+// import artworks from './artworks';
+// import artists from './artists';
+// import suggestions from './suggestions';
+// import platformUsers from './platform_users';
+import landingPageStats from './landingPageStats';
+import artworkTypes from './artworkTypes';
+// import trending from './trending';
+import nft from './nft';
+import user from './user';
+import collections from './collections';
+import seller from './seller';
+import themes from './themes';
+import types from './types';
+import search from './search';
+import blockchain from './blockchain';
+// import wallet from './walletExtension';
+
+const router = new Router();
+
+// router.use('/auth', auth);
+// router.use('/users', users);
+// router.use('/countries', countries);
+// router.use('/categories', categories);
+// router.use('/artworks', artworks);
+// router.use('/artists', artists);
+// router.use('/data-change-suggestion', suggestions);
+// router.use('/platformUsers', platformUsers);
+router.use('/meta', landingPageStats);
+router.use('/artworks', artworkTypes);
+// router.use('/trending', trending);
+router.use('/user', user);
+router.use('/nft', nft);
+router.use('/collections', collections);
+router.use('/seller', seller);
+router.use('/themes', themes);
+router.use('/types', types);
+router.use('/autoSuggest', search);
+router.use('/blockchain', blockchain);
+// router.use('/wallet', wallet);
+
+export default router;

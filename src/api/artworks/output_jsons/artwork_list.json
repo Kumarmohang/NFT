@@ -1,0 +1,73 @@
+[
+  {
+    "artworkId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "title": "Testina (Little Head)",
+    "creationYear": 1955,
+    "medium": "Glazed Ceramic",
+    "categoryId": "Sculptures And Ceramics",
+    "image": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/43590928.jpg",
+    "artistId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "artistName": "Lucio Fontana"
+  },
+  {
+    "artworkId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "title": "After Pablo Picasso - Visages",
+    "creationYear": 1971,
+    "medium": "Lithograph In Colors",
+    "categoryId": "Prints",
+    "image": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/Pablo-Picasso-Visage-Au-Trait-Oblique-Alain-Ramie-587-1968.jpg",
+    "artistId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "artistName": "Pablo Picasso"
+  },
+  {
+    "artworkId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "title": "A Los Toros Avec Picasso By Jaime Sabartes (B. 1014-47; C. Bk. 113)",
+    "creationYear": 1930,
+    "medium": "Lithographs",
+    "categoryId": "Prints",
+    "image": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/Pablo-Picasso-A-Los-Toros-1961.jpg",
+    "artistId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "artistName": "Pablo Picasso"
+  },
+  {
+    "artworkId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "title": "Man With Hat And Brush",
+    "creationYear": null,
+    "medium": "Lithograph In Colors ",
+    "categoryId": "Prints",
+    "image": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/Pablo-Picasso-Man-with-Hat-and-Brush.jpg",
+    "artistId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "artistName": "Pablo Picasso"
+  },
+  {
+    "artworkId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "title": "Femme Couchee Et Homme Au Grand Chapeau",
+    "creationYear": 1959,
+    "medium": "Linocut In Colors On Arches Wove Paper",
+    "categoryId": "Prints",
+    "image": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/Pablo-Picasso-Femme-couchee-et-homme-au-grand-chapeau-1959.jpg",
+    "artistId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "artistName": "Pablo Picasso"
+  },
+  {
+    "artworkId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "title": "Testina (Little Head)",
+    "creationYear": 1955,
+    "medium": "Glazed Ceramic",
+    "categoryId": "Sculptures And Ceramics",
+    "image": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/43590928.jpg",
+    "artistId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "artistName": "Lucio Fontana"
+  },
+
+  {
+    "artworkId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "title": "After Pablo Picasso - Visages",
+    "creationYear": 1971,
+    "medium": "Lithograph In Colors",
+    "categoryId": "Prints",
+    "image": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/Pablo-Picasso-Visage-Au-Trait-Oblique-Alain-Ramie-587-1968.jpg",
+    "artistId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "artistName": "Pablo Picasso"
+  }
+]

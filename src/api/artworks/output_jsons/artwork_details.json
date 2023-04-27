@@ -1,0 +1,102 @@
+[
+  {
+    "artworkId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+    "title": "Testina (Little Head)",
+    "creationYear": 1955,
+    "description": "<p>lorem ipsum<em>lorem ipsum</em></p>",
+    "medium": "oil on canvas",
+    "categoryId": "Sculptures And Ceramics",
+    "artistName": "Lucio Fontana",
+    "artistId": "string",
+    "dimensions": [
+      {
+        "height": "100",
+        "width": "10",
+        "depth": "5",
+        "unit": "mm",
+        "key": "frame",
+        "originalStr": "100 x 10 x 5 mm"
+      },
+      {
+        "height": "100",
+        "width": "10",
+        "depth": "5",
+        "unit": "mm",
+        "key": "foil",
+        "originalStr": "100 x 10 x 5 mm"
+      }
+    ],
+    "auctionRecords": [
+      {
+        "auctionEventName": "string",
+        "auctionHouseName": "string",
+        "auctionLocation": "string",
+        "lot": "string",
+        "isSold": true,
+        "saleDate": "string",
+        "price": {
+          "premiumPriceSold": 10,
+          "premiumPriceCurrency": "USD",
+          "hammerPriceSold": 10,
+          "hammerPriceCurrency": "USD",
+          "estimateMin": 5,
+          "estimateMax": 10,
+          "estimateCurrency": "USD"
+        },
+        "guaranteedLot": {
+          "isGuaranteed": true,
+          "guaranteedPrice": "string",
+          "guaranteedConditions": "string"
+        },
+        "premiumLot": {
+          "isPremium": true,
+          "premiumLotDetails": "string"
+        }
+      }
+    ],
+    "literature": "<p>lorem ipsum<em>lorem ipsum</em>literature</p>",
+    "provenance": "<p>lorem ipsum<em>lorem ipsum</em> provenance</p>",
+    "exhibitions": "<p>lorem ipsum<em>lorem ipsum</em>exhibitions</p>",
+    "condition": "<p>lorem ipsum<em>lorem ipsum</em>condition</p>",
+    "images": [
+      {
+        "url": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/43590928.jpg",
+        "size": "small"
+      },
+      {
+        "url": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/43590928.jpg",
+        "size": "small"
+      },
+      {
+        "url": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/43590928.jpg",
+        "size": "small"
+      },
+      {
+        "url": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/43590928.jpg",
+        "size": "small"
+      },
+      {
+        "url": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/43590928.jpg",
+        "size": "small"
+      },
+      {
+        "url": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/43590928.jpg",
+        "size": "small"
+      },
+      {
+        "url": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/43590928.jpg",
+        "size": "small"
+      },
+      {
+        "url": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/43590928.jpg",
+        "size": "small"
+      },
+      {
+        "url": "https://d16kd6gzalkogb.cloudfront.net/auction_artwork_images/43590928.jpg",
+        "size": "small"
+      }
+    ],
+    "currentPredictedPrice": 0,
+    "currentPredictedPriceCurrency": "USD"
+  }
+]

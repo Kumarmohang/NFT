@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  postgres_container:
+    container_name: postgres_container2
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=naman123
+    networks:
+      - nft2
+    ports:
+      - 9081:5432
+
+  nft_container:
+    container_name: nft_backend2
+    image: nft:latest
+    restart: always
+    command: sh -c "npm i && npm run prod"
+    working_dir: '/demo_app/'
+    depends_on:
+      - postgres_container
+    volumes:
+      - ./:/demo_app
+    networks:
+      - nft2
+    ports:
+      - 8003:8001
+
+networks:
+  nft2:
+    name: nft2

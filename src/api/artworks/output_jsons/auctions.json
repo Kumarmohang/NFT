@@ -1,0 +1,31 @@
+{
+  "artworkId": "f912b149-e7a0-49dc-bf79-e5b60c03d038",
+  "results": [
+    {
+      "auctionEventName": "string",
+      "auctionHouseName": "string",
+      "auctionLocation": "string",
+      "lot": "string",
+      "isSold": true,
+      "saleDate": "string",
+      "price": {
+        "premiumPriceSold": 10,
+        "premiumPriceCurrency": "USD",
+        "hammerPriceSold": 10,
+        "hammerPriceCurrency": "USD",
+        "estimateMin": 5,
+        "estimateMax": 10,
+        "estimateCurrency": "USD"
+      },
+      "guaranteedLot": {
+        "isGuaranteed": true,
+        "guaranteedPrice": "string",
+        "guaranteedConditions": "string"
+      },
+      "premiumLot": {
+        "isPremium": true,
+        "premiumLotDetails": "string"
+      }
+    }
+  ]
+}

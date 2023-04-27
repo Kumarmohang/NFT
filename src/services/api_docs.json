@@ -1,0 +1,2045 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "0.1.0",
+    "title": "Artwork Platform API's",
+    "description": "This document contains the list of apis, endpoints and signatures of the platform. The document contains apis used to query/search artists, artworks, auction lots for an artwork."
+  },
+  "servers": [
+    {
+      "url": "https://artwork.abc.com/api/v1",
+      "description": "API HOST"
+    },
+    {
+      "url": "http://localhost:8001/api/v1",
+      "description": "Development HOST"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "NFT"
+    },
+    {
+      "name": "Types"
+    },
+    {
+      "name": "User"
+    },
+    {
+      "name": "Collections"
+    },
+    {
+      "name": "Themes"
+    },
+    {
+      "name": "Wallet Extensions"
+    },
+    {
+      "name": "Search"
+    },
+    {
+      "name": "Notifications"
+    },
+    {
+      "name": "Blockchain"
+    },
+    {
+      "name": "Landing Page Stats"
+    }
+  ],
+  "paths": {
+    "/artists": {
+      "get": {
+        "tags": ["Artists"],
+        "description": "This returns the list of all artist based on the filters applied. If no filter is passed, artists will be returned based on the artworks count of the artist in the system in descending order i.e. the artist with the highest artwork count in the system will be the first artist and so on.",
+        "operationId": "Get artist list",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "The name of the artist. This supports wildcard pattern matching. The wildcard matching is case insensitive.",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "examples": {
+              "Example 1": {
+                "value": "*pablo*",
+                "description": "Returns all the artists containing the string 'pablo' in name."
+              },
+              "Example 2": {
+                "value": "*pablo",
+                "description": "Returns all the artists with name ending with the string 'pablo'."
+              },
+              "Example 3": {
+                "value": "pablo*",
+                "description": "Returns all the artists with name starting with the string 'pablo'."
+              },
+              "Example 4": {
+                "value": "pi*so",
+                "description": "Returns all the artists with name starting with characters 'pi' and ending with 'so'."
+              }
+            }
+          },
+          {
+            "name": "nationality",
+            "in": "query",
+            "description": "The country code. ISO codes for various countries will be used as per ISO 3166-1 alpha-2 code standard. For locations which does not have a specific ISO code, it will contain the name of the location (eg. scottish, korean, etc).",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "examples": {
+              "Example 1": {
+                "value": "US",
+                "description": "Returns all the artists which have country: US."
+              },
+              "Example 2": {
+                "value": "US,FR",
+                "description": "Returns all the artists from both countries (US or FR)."
+              }
+            }
+          },
+          {
+            "name": "birthYearFrom",
+            "in": "query",
+            "description": "All records which have birth year greater than or equal to this value (inclusive of the year).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1930"
+          },
+          {
+            "name": "birthYearTo",
+            "in": "query",
+            "description": "All records which have birth year less than or equal to this value (inclusive of the year).",
+            "schema": {
+              "type": "string"
+            },
+            "example": "1940",
+            "required": false
+          },
+          {
+            "name": "deathYearFrom",
+            "in": "query",
+            "description": "All records which have death year greater than or equal to this value (inclusive of the year).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1930"
+          },
+          {
+            "name": "deathYearTo",
+            "in": "query",
+            "description": "All records which have death year less than or equal to this value (inclusive of the year).",
+            "schema": {
+              "type": "string"
+            },
+            "example": "1940",
+            "required": false
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "description": "The gender of the artist.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["F", "M"]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of records to return. The default value is 10.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            },
+            "required": false
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of records to skip. The default value is 0.",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            },
+            "required": false,
+            "example": "20"
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "description": "Supported fields: name, birthYear, artworksCount.  \nSorting can be used to order the results based on the fields specified. The value is comma separated list of sort fields. The sort order (asc, desc) can also be appended to each sort field separated by '_' character. If no sort order is specified for a field, the default will be set as ascending. Multiple fields can be specified for sorting with their respective order. If sort_by= birthYear_desc,name_asc is specified then the records will be sorted by birthYear in descending order. If multiple records have the same birth year, the ordering will done based on their name by ascending order.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "artworksCount"
+            },
+            "examples": {
+              "Example 1": {
+                "value": "name",
+                "description": "Alphabetical sorting by name in ascending order."
+              },
+              "Example 2": {
+                "value": "birthYear_desc",
+                "description": "Numerical sorting by birthyear in descending order."
+              },
+              "Example 3": {
+                "value": "birthYear_asc,name_desc",
+                "description": "Sort by birth year in ascending order and then by artist name in descending order."
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of artists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artistsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artists/{artistId}/details": {
+      "get": {
+        "tags": ["Artists"],
+        "description": "This returns all the details of the respective artist.",
+        "operationId": "Get an artist details",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "artistId",
+            "in": "path",
+            "description": "The id of the artist.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "example": "f912b149-e7a0-49dc-bf79-e5b60c03d039"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Artist details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artistsDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "This response comes when the artist with given id is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artists/details": {
+      "get": {
+        "tags": ["Artists"],
+        "description": "This returns details for multiple artist Ids.",
+        "operationId": "Get details for multiple artists",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "artistId",
+            "in": "query",
+            "description": "Comma separated list of artist ids.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "required": true,
+            "examples": {
+              "Example 1": {
+                "value": "f912b149-e7a0-49dc-bf79-e5b60c03d038,f912b149-e7a0-49dc-bf79-e5b60c03d039"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Artist details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artistsBulkDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artists/{artistId}/metadata": {
+      "get": {
+        "tags": ["Artists"],
+        "description": "This api will return the logs of changes/updates done on a given artist record. This is a sample representation and the final signature will be decided during phase 3 as currently there will be frequent changes in the artworks, artist records as the data crawling, organisation and linking is in progress. In the next phases, the final data the frequency of changes will be less as compared to the initial phase.",
+        "operationId": "Get an artist metadata",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "artistId",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "description": "The id of the artist",
+            "example": "7c27b43e-1733-4382-bd37-48ca39d719f2",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Artist record logs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artistUpdationLogsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "This response comes when the artist with given id is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artists/metadata": {
+      "get": {
+        "tags": ["Artists"],
+        "description": "This returns metadata details for multiple artist Ids.",
+        "operationId": "Get metadata details for multiple artists",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "artistId",
+            "in": "query",
+            "description": "Comma separated list of artist ids.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "required": true,
+            "examples": {
+              "Example 1": {
+                "value": "f912b149-e7a0-49dc-bf79-e5b60c03d038,f912b149-e7a0-49dc-bf79-e5b60c03d039"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Multiple artist's record logs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artistBulkUpdationLogsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "description": "This api is used to authenticate the client. This returns an token that needs to be used to authorize all the api calls. Token expiry time is also returned. After the token gets expire, All the api calls will result into HTTP error 401. Once a token is generated, the same can be used till artwork platform returns 401. The application/client should have login/relogin mechanism implemented inside the flow. The expiry time of the token can be mutually agreed. The credentials, token should be kept secured and should not be accessible by end users/user facing portal.",
+        "operationId": "Login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/login"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Login successful.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "delete": {
+        "tags": ["Auth"],
+        "description": "This API is used to discontinue a session. The respective token will be expired. All API calls authorized using the expired token will result into 401.",
+        "operationId": "Logout",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Logout is successful."
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artworks": {
+      "get": {
+        "tags": ["Artworks"],
+        "description": "This returns the list of all artworks based on the filters passed. Multiple filters can also be passed in a single query. If no filter is passed, the results will returned based on the sale price of the most recent auction lot of the respective artwork in descending order.",
+        "operationId": "Get artworks",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "The name of the Artwork. This supports wildcard pattern matching. The wildcard matching will be case insensitive.",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "examples": {
+              "Example 1": {
+                "value": "*dora maar*",
+                "description": "Returns all the artworks containing the string 'dora maar'."
+              },
+              "Example 2": {
+                "value": "*maar",
+                "description": "Returns all the artworks with name ending with the string 'maar'."
+              },
+              "Example 3": {
+                "value": "dora*",
+                "description": "Returns all the artworks with name starting with the string 'dora'."
+              },
+              "Example 4": {
+                "value": "d*a",
+                "description": "Returns all the artworks with name starting with 'd' and ending with 'a'."
+              }
+            }
+          },
+          {
+            "name": "artistId",
+            "in": "query",
+            "description": "Comma separated list of artist ids. Atleast one artistId is required.",
+            "schema": {
+              "type": "string",
+              "example": "5b9f9f8e8b8f7e0f8b8f7e0f,5b9f9f8e8b8f7e0f8b8f7e0g"
+            },
+            "required": false
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Comma separated list of category ids.",
+            "schema": {
+              "type": "string",
+              "example": "cat1,cat2"
+            },
+            "required": false
+          },
+          {
+            "name": "creationYearFrom",
+            "in": "query",
+            "description": "All records which have creation year greater than or equal to this value (inclusive of the year).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1930"
+          },
+          {
+            "name": "creationYearTo",
+            "in": "query",
+            "description": "All records which have creation year less than or equal to this value (inclusive of the year).",
+            "schema": {
+              "type": "string"
+            },
+            "example": "1940",
+            "required": false
+          },
+          {
+            "name": "lastAuctionDateFrom",
+            "in": "query",
+            "description": "All records which have last auction date greater than or equal to this value.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "Format 1 (YYYY)": {
+                "value": "1930",
+                "description": "Returns all the artwork which have last auction date greater than or equal to 1930)."
+              },
+              "Format 2 (mm-YYYY)": {
+                "value": "02-1930",
+                "description": "Returns all the artwork which have last auction date greater than or equal to 02-1930."
+              },
+              "Format 3 (dd-mm-YYYY)": {
+                "value": "27-02-1930",
+                "description": "Returns all the artwork which have last auction date greater than or equal to 27-02-1930."
+              }
+            }
+          },
+          {
+            "name": "lastAuctionDateTo",
+            "in": "query",
+            "description": "All records which have last auction date less than or equal to this value.",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "Format 1 (YYYY)": {
+                "value": "1930",
+                "description": "Returns all the artwork which have last auction date less than or equal to 1930)."
+              },
+              "Format 2 (mm-YYYY)": {
+                "value": "02-1930",
+                "description": "Returns all the artwork which have last auction date less than or equal to 02-1930."
+              },
+              "Format 3 (dd-mm-YYYY)": {
+                "value": "27-02-1930",
+                "description": "Returns all the artwork which have last auction date less than or equal to 27-02-1930."
+              }
+            }
+          },
+          {
+            "name": "heightFrom",
+            "in": "query",
+            "description": "All records which have height greater than equal to this value. The unit considered is ‘mm’.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "example": 50
+          },
+          {
+            "name": "heightTo",
+            "in": "query",
+            "description": "All records which have height less than or equal to this value. The unit considered is ‘mm’.",
+            "schema": {
+              "type": "number"
+            },
+            "example": 260,
+            "required": false
+          },
+          {
+            "name": "widthFrom",
+            "in": "query",
+            "description": "All records which have width greater than equal to this value. The unit considered is ‘mm’.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "example": 50
+          },
+          {
+            "name": "widthTo",
+            "in": "query",
+            "description": "All records which have width less than or equal to this value. The unit considered is ‘mm’.",
+            "schema": {
+              "type": "number"
+            },
+            "example": 260,
+            "required": false
+          },
+          {
+            "name": "depthFrom",
+            "in": "query",
+            "description": "All records which have depth greater than equal to this value. The unit considered is ‘mm’.",
+            "required": false,
+            "schema": {
+              "type": "number"
+            },
+            "example": 50
+          },
+          {
+            "name": "depthTo",
+            "in": "query",
+            "description": "All records which have depth less than or equal to this value. The unit considered is ‘mm’.",
+            "schema": {
+              "type": "number"
+            },
+            "example": 260,
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The number of records to return. The default value is 10.",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "required": false
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of records to skip. The default value is 0.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "required": false
+          },
+          {
+            "name": "sort_by",
+            "in": "query",
+            "description": "Supported fields: name, creationYear.  \nSorting can be used to order the results based on the fields specified. The value is comma separated list of sort fields. The sort order (asc, desc) can also be appended to each sort field separated by '_' character. If no sort order is specified for a field, the default will be set as ascending. Multiple fields can be specified for sorting with their respective order. If sort_by=creationYear_desc,name_asc is specified then the records will be sorted by creationYear. If multiple records have the same creation year, the ordering will done based on their name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "Example 1": {
+                "value": "name",
+                "description": "Alphabetical sorting by name in ascending order."
+              },
+              "Example 2": {
+                "value": "creationYear_desc",
+                "description": "Numerical sorting by creation year in descending order."
+              },
+              "Example 3": {
+                "value": "creationYear_asc,name_desc",
+                "description": "Sort by creation year in ascending order and then by artwork name in descending order."
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of artworks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artworkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artworks/{artworkId}/details": {
+      "get": {
+        "tags": ["Artworks"],
+        "description": "Returns the details of the respective artwork.",
+        "operationId": "Get an artwork details",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "artworkId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "in": "path",
+            "description": "The id of the artwork.",
+            "example": "7c27b43e-1733-4382-bd37-48ca39d719f2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Artwork details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artworkDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "This response comes when the artwork with given id is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artworks/details": {
+      "get": {
+        "tags": ["Artworks"],
+        "description": "This returns details for multiple artwork Ids.",
+        "operationId": "Get details for multiple artworks",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "artworkId",
+            "in": "query",
+            "description": "Comma separated list of artwork ids.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "required": true,
+            "examples": {
+              "Example 1": {
+                "value": "f912b149-e7a0-49dc-bf79-e5b60c03d038,f912b149-e7a0-49dc-bf79-e5b60c03d039"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Artwork details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artworksBulkDetailResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artworks/{artworkId}/auctions": {
+      "get": {
+        "tags": ["Artworks"],
+        "description": "This will return the list of auction records for the artworkId passed.",
+        "operationId": "Get auctions for an artwork",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "artworkId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "in": "path",
+            "description": "The id of the artwork",
+            "example": "7c27b43e-1733-4382-bd37-48ca39d719f2"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Artwork auction details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/auctionLotsDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "This response comes when the artwork with given id is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artworks/{artworkId}/metadata": {
+      "get": {
+        "tags": ["Artworks"],
+        "description": "This api will return the logs of changes/updates done on a given artwork. This is a sample representation and the final signature will be decided during phase 3 as currently there will be frequent changes in the artworks, artist records as the data crawling, organisation and linking is in progress. In the next phases, the final data the frequency of changes will be less as compared to the initial phase.",
+        "operationId": "Get an artwork metadata",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "artworkId",
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "description": "The id of the artwork",
+            "example": "7c27b43e-1733-4382-bd37-48ca39d719f2",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Artwork logs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artworkUpdationLogsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "This response comes when the artwork with given id is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artworks/metadata": {
+      "get": {
+        "tags": ["Artworks"],
+        "description": "This returns metadata details for multiple artwork Ids.",
+        "operationId": "Get metadata details for multiple artworks",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "artworkId",
+            "in": "query",
+            "description": "Comma separated list of artwork ids.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "required": true,
+            "examples": {
+              "Example 1": {
+                "value": "f912b149-e7a0-49dc-bf79-e5b60c03d038,f912b149-e7a0-49dc-bf79-e5b60c03d039"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Multiple artworks record logs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/artworksBulkUpdationLogsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters/values. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400Schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": ["Categories"],
+        "description": "Get master list for all categories.",
+        "operationId": "Get categories",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categories list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/categoryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/countries": {
+      "get": {
+        "tags": ["Countries"],
+        "description": "Get master list for all countries.",
+        "operationId": "Get countries",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Countries Master list.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/countryResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorised request. The response contains the error message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401Schema"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "image": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The url of the image."
+          },
+          "size": {
+            "type": "string",
+            "enum": ["small", "medium", "large"],
+            "description": "The size of the image is decided by below criterion:  \nlarge: Image width > 800 px  \nmedium: 500 px < Image width <= 800 px  \nsmall(can also be used as thumbnail):  Image width < 500 px."
+          }
+        }
+      },
+      "artistMetaData": {
+        "type": "object",
+        "properties": {
+          "artistId": {
+            "type": "string",
+            "description": "Artist Unique Id.",
+            "example": "f912b149-e7a0-49dc-bf79-e5b60c03d038"
+          },
+          "name": {
+            "type": "string",
+            "description": "Artist Name.",
+            "example": "Pablo Picasso"
+          },
+          "birthYear": {
+            "type": "integer",
+            "description": "Artist's Birth Year.",
+            "example": 1930
+          },
+          "deathYear": {
+            "type": "integer",
+            "description": "Artist's Death Year.",
+            "example": 1940
+          },
+          "nationality": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["US", "FR", "Irish"],
+            "description": "Artist's nationality"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the artist.",
+            "example": "M|F"
+          },
+          "image": {
+            "type": "string",
+            "description": "The url of the image of the artist."
+          },
+          "artworksCount": {
+            "type": "integer",
+            "description": "The total artworks count of an artist."
+          }
+        }
+      },
+      "artistsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/artistMetaData"
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total number of results found."
+              }
+            }
+          }
+        }
+      },
+      "artistDetails": {
+        "type": "object",
+        "properties": {
+          "artistId": {
+            "type": "string",
+            "description": "Artist Unique Id.",
+            "example": "f912b149-e7a0-49dc-bf79-e5b60c03d038"
+          },
+          "name": {
+            "type": "string",
+            "description": "Artist Name"
+          },
+          "birthYear": {
+            "type": "integer",
+            "description": "Artist's Birth Year.",
+            "example": 1930
+          },
+          "deathYear": {
+            "type": "integer",
+            "description": "Artist's Death Year.",
+            "example": 1940
+          },
+          "birthPlace": {
+            "type": "string",
+            "description": "Artist's Birth Place.",
+            "example": "New York"
+          },
+          "deathPlace": {
+            "type": "string",
+            "description": "Artist's Death Place.",
+            "example": "New York"
+          },
+          "nationality": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["US", "FR", "Irish"],
+            "description": "Artist's nationality"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the artist.",
+            "example": "M|F"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/image"
+            }
+          },
+          "artworksCount": {
+            "type": "integer",
+            "description": "The total artworks count of an artist."
+          }
+        }
+      },
+      "artistsDetailResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/artistDetails"
+          }
+        }
+      },
+      "artistsBulkDetailResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/artistDetails"
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total number of results found."
+              }
+            }
+          }
+        }
+      },
+      "artistUpdationLogsFullResponse": {
+        "type": "object",
+        "properties": {
+          "artistId": {
+            "type": "string",
+            "description": "Artist Unique Id.",
+            "example": "f912b149-e7a0-49dc-bf79-e5b60c03d038"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/artworkUpdationLogs"
+            }
+          }
+        }
+      },
+      "artistUpdationLogsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "artistId": {
+                "type": "string",
+                "description": "Artist Unique Id.",
+                "example": "f912b149-e7a0-49dc-bf79-e5b60c03d038"
+              },
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/artworkUpdationLogs"
+                }
+              }
+            }
+          }
+        }
+      },
+      "artistBulkUpdationLogsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/artistUpdationLogsFullResponse"
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total number of results found."
+              }
+            }
+          }
+        }
+      },
+      "priceMetaData": {
+        "type": "object",
+        "properties": {
+          "premiumPriceSold": {
+            "type": "number",
+            "description": "The premium price of the sold lot.",
+            "example": 10
+          },
+          "premiumPriceCurrency": {
+            "type": "string",
+            "description": "The currency of the premium price of the sold lot. The value will contain a 3-character currency code as per the ISO 4217 standard.",
+            "example": "USD"
+          },
+          "hammerPriceSold": {
+            "type": "number",
+            "description": "The hammer price of the sold lot",
+            "example": 10
+          },
+          "hammerPriceCurrency": {
+            "type": "string",
+            "description": "The currency of the hammer price of the sold lot. The value will contain a 3-character currency code as per the ISO 4217 standard.",
+            "example": "USD"
+          },
+          "estimateMin": {
+            "type": "number",
+            "description": "The minimum estimate price of the lot.",
+            "example": 5
+          },
+          "estimateMax": {
+            "type": "number",
+            "description": "The maximum estimate price of the lot.",
+            "example": 10
+          },
+          "estimateCurrency": {
+            "type": "string",
+            "description": "The currency of the estimate price of the lot. The value will contain a 3-character currency code as per the ISO 4217 standard.",
+            "example": "USD"
+          }
+        }
+      },
+      "auctionMetaData": {
+        "type": "object",
+        "properties": {
+          "auctionEventName": {
+            "type": "string",
+            "description": "Auction Event Name."
+          },
+          "auctionHouseName": {
+            "type": "string",
+            "description": "Auction House Name."
+          },
+          "auctionLocation": {
+            "type": "string",
+            "description": "Location of the auction."
+          },
+          "lot": {
+            "type": "string",
+            "description": "Lot Number"
+          },
+          "isSold": {
+            "type": "boolean",
+            "description": "Is the artwork sold in the auction."
+          },
+          "saleDate": {
+            "type": "string",
+            "description": "Sale Date."
+          },
+          "price": {
+            "$ref": "#/components/schemas/priceMetaData"
+          },
+          "guaranteedLot": {
+            "type": "object",
+            "properties": {
+              "isGuaranteed": {
+                "type": "boolean",
+                "description": "Is the auction lot a guaranteed auction lot."
+              },
+              "guaranteedPrice": {
+                "type": "string",
+                "description": "The guaranteed price of the lot."
+              },
+              "guaranteedConditions": {
+                "type": "string",
+                "description": "Conditions for guaranteed lot if any."
+              }
+            }
+          },
+          "premiumLot": {
+            "type": "object",
+            "properties": {
+              "isPremium": {
+                "type": "boolean",
+                "description": "Is the lot premium."
+              },
+              "premiumLotDetails": {
+                "type": "string",
+                "description": "Premium lot details if any."
+              }
+            }
+          }
+        }
+      },
+      "dimensionsMetaData": {
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "number",
+            "description": "Height of the artwork.",
+            "example": "100"
+          },
+          "width": {
+            "type": "number",
+            "description": "Width of the artwork.",
+            "example": "10"
+          },
+          "depth": {
+            "type": "number",
+            "description": "Depth of the artwork.",
+            "example": "5"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measurement.",
+            "example": "mm"
+          },
+          "key": {
+            "type": "string",
+            "description": "Key of the dimension. The key can have values like frame, foil, etc as available on the source.",
+            "example": "frame|foil"
+          },
+          "originalStr": {
+            "type": "string",
+            "description": "Original Dimension String.",
+            "example": "100 x 10 x 5 mm"
+          }
+        }
+      },
+      "artworkDetails": {
+        "type": "object",
+        "properties": {
+          "artworkId": {
+            "type": "string",
+            "description": "Artwork Unique Id.",
+            "example": "f912b149-e7a0-49dc-bf79-e5b60c03d038"
+          },
+          "title": {
+            "type": "string",
+            "description": "Artwork Title."
+          },
+          "creationYear": {
+            "type": "integer",
+            "description": "Artwork Creation Year.",
+            "example": 1930
+          },
+          "description": {
+            "type": "string",
+            "description": "Artwork Description.",
+            "example": "<p>lorem ipsum<em>lorem ipsum</em></p>"
+          },
+          "medium": {
+            "type": "string",
+            "description": "Medium of the artwork.",
+            "example": "oil on canvas"
+          },
+          "categoryId": {
+            "type": "string",
+            "description": "Artwork Category Id."
+          },
+          "artistName": {
+            "type": "string",
+            "description": "Artwork Artist Name."
+          },
+          "artistId": {
+            "type": "string",
+            "description": "Artwork Artist Id."
+          },
+          "dimensions": {
+            "type": "array",
+            "description": "Artwork Dimension details.(with borders and without borders).",
+            "items": {
+              "$ref": "#/components/schemas/dimensionsMetaData"
+            }
+          },
+          "auctionRecords": {
+            "type": "array",
+            "description": "Artwork Auction Records.",
+            "items": {
+              "$ref": "#/components/schemas/auctionMetaData"
+            }
+          },
+          "literature": {
+            "type": "string",
+            "description": "Artwork Literature.",
+            "example": "<p>lorem ipsum<em>lorem ipsum</em></p>"
+          },
+          "provenance": {
+            "type": "string",
+            "description": "Artwork Provenance.",
+            "example": "<p>lorem ipsum<em>lorem ipsum</em></p>"
+          },
+          "exhibitions": {
+            "type": "string",
+            "description": "Artwork Exhibitions.",
+            "example": "<p>lorem ipsum<em>lorem ipsum</em></p>"
+          },
+          "condition": {
+            "type": "string",
+            "description": "Artwork Condition.",
+            "example": "<p>lorem ipsum<em>lorem ipsum</em></p>"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/image"
+            }
+          },
+          "currentPredictedPrice": {
+            "type": "number",
+            "description": "The current predicted price of the artwork."
+          },
+          "currentPredictedPriceCurrency": {
+            "type": "string",
+            "description": "The currency of the current predicted price of the artwork. The value will contain a 3-character currency code as per the ISO 4217 standard.",
+            "example": "USD"
+          }
+        }
+      },
+      "artworkDetailResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/artworkDetails"
+          }
+        }
+      },
+      "artworksBulkDetailResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/artworkDetails"
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total number of results found."
+              }
+            }
+          }
+        }
+      },
+      "auctionLotsDetails": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "artworkId": {
+                "type": "string",
+                "description": "Artwork Unique Id.",
+                "example": "f912b149-e7a0-49dc-bf79-e5b60c03d038"
+              },
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/auctionMetaData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "artworkMetaData": {
+        "type": "object",
+        "properties": {
+          "artworkId": {
+            "type": "string",
+            "description": "Artwork Unique Id.",
+            "example": "f912b149-e7a0-49dc-bf79-e5b60c03d038"
+          },
+          "title": {
+            "type": "string",
+            "description": "Artwork Title."
+          },
+          "creationYear": {
+            "type": "integer",
+            "description": "Artwork Creation Year.",
+            "example": 1930
+          },
+          "medium": {
+            "type": "string",
+            "description": "Artwork Medium Name.",
+            "example": "oil on canvas"
+          },
+          "categoryId": {
+            "type": "string",
+            "description": "Artwork Category Id.",
+            "example": "cat1"
+          },
+          "image": {
+            "type": "string",
+            "description": "Artwork Image Url."
+          },
+          "artistId": {
+            "type": "string",
+            "description": "Artist Unique Id.",
+            "example": "f912b149-e7a0-49dc-bf79-e5b60c03d038"
+          },
+          "artistName": {
+            "type": "string",
+            "description": "Artist Name."
+          }
+        }
+      },
+      "artworkResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/artworkMetaData"
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total number of results found."
+              }
+            }
+          }
+        }
+      },
+      "artworkUpdationLogs": {
+        "type": "object",
+        "properties": {
+          "changesMade": {
+            "type": "string"
+          },
+          "changeType": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        }
+      },
+      "artworksUpdationLogsFullResponse": {
+        "type": "object",
+        "properties": {
+          "artworkId": {
+            "type": "string",
+            "description": "Artwork Unique Id.",
+            "example": "f912b149-e7a0-49dc-bf79-e5b60c03d038"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/artworkUpdationLogs"
+            }
+          }
+        }
+      },
+      "artworkUpdationLogsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "artworkId": {
+                "type": "string",
+                "description": "Artwork Unique Id.",
+                "example": "f912b149-e7a0-49dc-bf79-e5b60c03d038"
+              },
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/artworkUpdationLogs"
+                }
+              }
+            }
+          }
+        }
+      },
+      "artworksBulkUpdationLogsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/artworksUpdationLogsFullResponse"
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total number of results found."
+              }
+            }
+          }
+        }
+      },
+      "category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Category Id. The id field contains an UUID.",
+            "example": "f912b149-e7a0-49dc-bf79-e5b60c03d038"
+          },
+          "name": {
+            "type": "string",
+            "description": "Category Name.",
+            "example": "Painting"
+          },
+          "info": {
+            "type": "string",
+            "description": "Short description of the category.",
+            "example": "Paintings and Artworks"
+          }
+        }
+      },
+      "categoryResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/category"
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total number of categories found."
+              }
+            }
+          }
+        }
+      },
+      "countries": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "It contains 2 characters ISO code for the countries for which the ISO codes is defined by the ISO 3166-1 alpha-2. For locations which does not have a specific ISO code, the id will contain the name of the location (eg. scottish, korean, etc).",
+            "example": "IN"
+          },
+          "name": {
+            "type": "string",
+            "description": "Country Name.",
+            "example": "India"
+          },
+          "is_iso": {
+            "type": "boolean",
+            "description": "It will be true for countries which contain a defined ISO code. For other cases, it will be false.",
+            "example": false
+          }
+        }
+      },
+      "countryResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/countries"
+                }
+              },
+              "total": {
+                "type": "integer",
+                "description": "Total number of countries found."
+              }
+            }
+          }
+        }
+      },
+      "error404Schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Record not found"
+          },
+          "errorCode": {
+            "type": "number",
+            "default": 404
+          }
+        }
+      },
+      "error400Schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Bad request"
+          },
+          "field": {
+            "type": "string",
+            "description": "name of the invalid parameter."
+          },
+          "errorCode": {
+            "type": "number",
+            "default": 400
+          }
+        }
+      },
+      "error401Schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Unauthorized"
+          },
+          "errorCode": {
+            "type": "number",
+            "default": 401
+          }
+        }
+      },
+      "login": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["username", "password"]
+      },
+      "loginResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "success": {
+                "type": "boolean",
+                "default": true
+              },
+              "token": {
+                "type": "string"
+              },
+              "expireIn": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "logoutResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "success": {
+                "type": "boolean",
+                "default": true
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
